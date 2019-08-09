@@ -1,0 +1,35 @@
+{
+  "name": "gyi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huaqingyi/gyi.git"
+  },
+  "keywords": [
+    "gulp",
+    "deploy",
+    "yi"
+  ],
+  "author": "huaqingyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huaqingyi/gyi/issues"
+  },
+  "homepage": "https://github.com/huaqingyi/gyi#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "lodash": "^4.17.15",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/gulp": "^4.0.6",
+    "@types/lodash": "^4.14.136"
+  }
+}
