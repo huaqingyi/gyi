@@ -1,0 +1,1 @@
+{"version":3,"sources":["libs/fork.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA,uCAAsC;AAEtC;IAA0B,wBAAQ;IAAlC;;IAEA,CAAC;IAAD,WAAC;AAAD,CAFA,AAEC,CAFyB,mBAAQ,GAEjC;AAFY,oBAAI","file":"../../libs/fork.js","sourcesContent":["import { LibsBase } from \"./libsbase\";\n\nexport class Fork extends LibsBase {\n\n}"]}

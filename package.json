@@ -23,13 +23,21 @@
   "homepage": "https://github.com/huaqingyi/gyi#readme",
   "dependencies": {
     "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
     "lodash": "^4.17.15",
+    "merge2": "^1.2.4",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.1"
   },
   "devDependencies": {
     "@types/gulp": "^4.0.6",
-    "@types/lodash": "^4.14.136"
+    "@types/gulp-sourcemaps": "0.0.32",
+    "@types/gulp-typescript": "^2.13.0",
+    "@types/lodash": "^4.14.136",
+    "@types/merge2": "^1.1.4",
+    "@types/webpack": "^4.32.1"
   }
 }

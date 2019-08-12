@@ -1,35 +1,25 @@
 import { GFile, Task, TSC } from './src';
 import { join } from 'path';
+import { Test } from './custom/build/test';
 
 @GFile
 export class GulpFile {
 
     @Task()
-    public async test(){
-        return await console.log('test');
+    public async test() {
+        console.log('test');
     }
 
     @Task({
         src: join(__dirname, 'src/**/*.ts'),
-        series:['test']
+        dest: join(__dirname, 'dist'),
+        series: ['test'],
+        injectable: { Test }
     })
-    public async build(tsc: TSC) {
+    public async build(tsc: TSC, test: Test) {
+        await test.runtime();
         console.log('build');
-        // watch.run(
-        //     path.join(__dirname, 'src/**/*.ts'),
-        //     (gulp: Gulp) => {
-        //         console.log('watch ...')
-        //         let tsResult = gulp
-        //             .src([path.join(__dirname, 'src/**/*.ts')])
-        //             .pipe(sourcemaps.init())
-        //             .pipe(ts.createProject('tsconfig.json')());
-        //         return merge([
-        //             tsResult.dts.pipe(gulp.dest('./dist')),
-        //             tsResult.js.pipe(sourcemaps.write("./sourcemaps"))
-        //                 .pipe(gulp.dest('./dist'))
-        //         ]);
-        //     }
-        // )
+        await tsc.runtime();
     }
 
 }

@@ -1,13 +1,16 @@
 import { GYI } from "./gyi";
 import Undertaker from 'undertaker';
-import { map, filter, difference } from 'lodash';
-import gulp from 'gulp';
+import { map, find } from 'lodash';
+import gulp, { series as seriesFun, parallel as parallelFun, watch } from 'gulp';
+import * as libs from '../libs';
+import { LibsBase } from "../libs";
 
 export interface TaskOption {
     src?: string;
     dest?: string;
     series?: Undertaker.Task[];
     parallel?: Undertaker.Task[];
+    injectable?: { [x: string]: any };
 }
 
 export interface TaskConfig {
@@ -16,6 +19,13 @@ export interface TaskConfig {
 }
 
 export class TaskCore extends GYI {
+
+    protected libs!: LibsBase[];
+
+    constructor() {
+        super();
+        this.libs = map(libs, lib => <any>lib);
+    }
 
     async injectTask(name: string, key: string, option: TaskConfig) {
         if (!this.store[name]) this.store[name] = [];
@@ -26,22 +36,9 @@ export class TaskCore extends GYI {
         const { name } = mode;
         const instance = new (mode as any);
 
-        const delayTasks = filter(this.store[name], config => {
-            if (!config.option) return false;
-            const { option } = config.option;
-            if (!option) return false;
-            if (option.series || option.parallel) return true;
-            return false;
-        });
-
-        const tasks = difference(this.store[name], delayTasks);
-
-        await Promise.all(map(tasks, async config => {
+        await Promise.all(map(this.store[name], async config => {
             const { key, option } = config;
-            if (option.inject) {
-
-            }
-            let exec = (async (done: any) => {
+            let exec = (async () => {
                 let end: NodeJS.ReadWriteStream;
                 let destEnd: NodeJS.ReadWriteStream | null = null;
                 if (option.option) {
@@ -49,36 +46,36 @@ export class TaskCore extends GYI {
                     if (src) end = await gulp.src(src);
                     if (dest) destEnd = gulp.dest(dest);
                 }
-                end = await instance[key].apply(instance);
+                let inject: any[] = [];
+                if (option.inject && option.inject.length > 0) {
+                    inject = map(option.inject, lib => {
+                        let LibInstance: any = find(this.libs, item => (item as any).name === lib.name);
+                        if (!LibInstance) {
+                            if (lib.name === 'Gulp') return gulp;
+                            const { injectable } = option.option;
+                            console.log(LibInstance)
+                            if (injectable && injectable[lib.name]) return new injectable[lib.name](end);
+                            return injectable;
+                        }
+                        return new LibInstance(end);
+                    });
+                }
+                end = await instance[key].apply(instance, inject);
                 if (end && destEnd !== null) end = await end.pipe(destEnd);
-                return await done(end) || end;
             }).bind(this);
 
-            await gulp.task(key, exec);
-        }));
+            if (!option.option) return await gulp.task(key, exec);
 
-        return await Promise.all(map(delayTasks, async config => {
-            const { key, option } = config;
-            if (option.inject) {
+            const { series, parallel } = option.option;
 
+            if (series) {
+                return await gulp.task(key, seriesFun(...series.concat([exec])));
+            } else if (parallel) {
+                return await gulp.task(key, parallelFun(...parallel.concat([exec])));
+            } else if (series && parallel) {
+                return new Error(`series not have parallel ...`);
             }
-            if (option.option) {
-                const { src, dest, series, parallel } = option.option;
-                let exec = (async (done: any) => {
-                    let end: NodeJS.ReadWriteStream;
-                    if (src) end = await gulp.src(src);
-                    end = await instance[key].apply(instance);
-                    if (end && dest) end = await end.pipe(gulp.dest(dest));
-                    return await done(end) || end;
-                }).bind(this);
-
-                if (series) {
-                    await gulp.task(key, gulp.series(series.concat([exec])));
-                } else if (parallel) {
-                    await gulp.task(key, gulp.parallel(parallel.concat([exec])));
-                }
-            }
-            return await gulp;
+            return await gulp.task(key, exec);
         }));
     }
 }
