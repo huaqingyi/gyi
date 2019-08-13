@@ -115,9 +115,10 @@ var TaskCore = /** @class */ (function (_super) {
                                                             if (option.inject && option.inject.length > 0) {
                                                                 inject = lodash_1.map(option.inject, function (lib) {
                                                                     var LibInstance = lodash_1.find(_this.libs, function (item) { return item.name === lib.name; });
+                                                                    if (LibInstance.name === 'Gulp')
+                                                                        return gulp_1.default;
                                                                     if (!LibInstance) {
-                                                                        if (lib.name === 'Gulp')
-                                                                            return gulp_1.default;
+                                                                        console.log(lib.name);
                                                                         if (option.option && option.option.injectable) {
                                                                             var injectable = option.option.injectable;
                                                                             console.log(LibInstance);
@@ -125,6 +126,7 @@ var TaskCore = /** @class */ (function (_super) {
                                                                                 return new injectable[lib.name](end);
                                                                             return injectable;
                                                                         }
+                                                                        return undefined;
                                                                     }
                                                                     return new LibInstance(end);
                                                                 });
