@@ -52,10 +52,12 @@ export class TaskCore extends GYI {
                         let LibInstance: any = find(this.libs, item => (item as any).name === lib.name);
                         if (!LibInstance) {
                             if (lib.name === 'Gulp') return gulp;
-                            const { injectable } = option.option;
-                            console.log(LibInstance)
-                            if (injectable && injectable[lib.name]) return new injectable[lib.name](end);
-                            return injectable;
+                            if (option.option && option.option.injectable) {
+                                const { injectable } = option.option;
+                                console.log(LibInstance)
+                                if (injectable && injectable[lib.name]) return new injectable[lib.name](end);
+                                return injectable;
+                            }
                         }
                         return new LibInstance(end);
                     });

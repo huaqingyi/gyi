@@ -118,11 +118,13 @@ var TaskCore = /** @class */ (function (_super) {
                                                                     if (!LibInstance) {
                                                                         if (lib.name === 'Gulp')
                                                                             return gulp_1.default;
-                                                                        var injectable = option.option.injectable;
-                                                                        console.log(LibInstance);
-                                                                        if (injectable && injectable[lib.name])
-                                                                            return new injectable[lib.name](end);
-                                                                        return injectable;
+                                                                        if (option.option && option.option.injectable) {
+                                                                            var injectable = option.option.injectable;
+                                                                            console.log(LibInstance);
+                                                                            if (injectable && injectable[lib.name])
+                                                                                return new injectable[lib.name](end);
+                                                                            return injectable;
+                                                                        }
                                                                     }
                                                                     return new LibInstance(end);
                                                                 });
