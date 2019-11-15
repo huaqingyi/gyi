@@ -1,3 +1,4 @@
+## npm i gyi --save-dev
 ## 自动注入 Gulp 工具
 ```
 import { GFile, Task, TSC, Gulp } from 'gyi';
