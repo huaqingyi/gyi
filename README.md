@@ -29,3 +29,14 @@ export class GulpFile {
 
 }
 ```
+
+#### 自定义包规范
+```
+import { LibsBase } from "gyi";
+
+export class Test extends LibsBase {
+    async runtime(): Promise<any> {
+        return await console.log('test build tools ...');
+    }
+}
+```
