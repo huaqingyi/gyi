@@ -1,7 +1,7 @@
-import { GyiLib } from '../../src';
+import { GyiLib, GyiStartUP } from '../../src';
 
-export class Test extends GyiLib {
-    async runtime(): Promise<any> {
+export class Test extends GyiLib implements GyiStartUP {
+    public async runtime(): Promise<any> {
         return await console.log('test build tools ...');
     }
 }
