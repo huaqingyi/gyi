@@ -1,44 +1,27 @@
-import { GFile, Task, TSC, Gulp } from './src';
+import { GFile, Task, Gulp, TSC, Gyi } from './src';
 import { join } from 'path';
 import { Test } from './custom/build/test';
 
-// @GFile
-// export class GulpFile {
-
-//     @Task()
-//     public async test() {
-//         console.log('test');
-//     }
-
-//     @Task({
-//         src: join(__dirname, 'src/**/*.ts'),
-//         dest: join(__dirname, 'dist'),
-//         series: ['test'],
-//         injectable: { Test }
-//     })
-//     public async build(tsc: TSC, test: Test) {
-//         await test.runtime();
-//         console.log('build');
-//         await tsc.runtime();
-//     }
-
-// }
 @GFile
-export class GulpFile {
+export class GulpFile extends Gyi {
 
     @Task({
         src: join(__dirname, 'src/**/*.ts'),
-        dest: join(__dirname, 'dist')
+        dest: join(__dirname, 'dist'),
+        description: `测试 build ...`,
     })
     public async build(tsc: TSC) {
         console.log('build');
         tsc.runtime();
     }
 
-    @Task()
-    public async default(gulp: Gulp) {
-        console.log('build');
-        gulp.watch(join(__dirname, 'src/**/*.ts'), gulp.series('build'));
+    @Task
+    public async test(test: Test) {
+        console.log(await test.runtime());
     }
 
+    @Task
+    public async default(gulp: Gulp) {
+        console.log(gulp);
+    }
 }

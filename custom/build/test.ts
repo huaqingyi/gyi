@@ -1,6 +1,6 @@
-import { LibsBase } from "../../src";
+import { GyiLib } from '../../src';
 
-export class Test extends LibsBase {
+export class Test extends GyiLib {
     async runtime(): Promise<any> {
         return await console.log('test build tools ...');
     }
