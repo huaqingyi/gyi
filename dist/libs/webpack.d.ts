@@ -1,10 +1,10 @@
 /// <reference types="node" />
-import { LibsBase } from "./libsbase";
-import webpack from 'webpack';
-export declare class Webpack extends LibsBase {
+import { GyiLib } from './gyi.libs';
+import { Configuration } from 'webpack';
+export declare class Webpack extends GyiLib {
     /**
      * build config import
      * @param config configpath or webpack.Configuration
      */
-    runtime(config?: string | webpack.Configuration): Promise<NodeJS.ReadWriteStream>;
+    runtime(config?: string | Configuration): Promise<NodeJS.ReadWriteStream>;
 }

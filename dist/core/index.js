@@ -4,6 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./gyi"));
-__export(require("./task.core"));
 
 //# sourceMappingURL=../sourcemaps/core/index.js.map

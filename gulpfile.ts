@@ -1,18 +1,27 @@
-import { GFile, Task, Gulp, TSC, Gyi } from './src';
+/*
+ * @FilePath: /gyi/gulpfile.ts
+ * @Descripttion: 
+ * @version: 
+ * @Author: 易华青
+ * @Date: 2020-10-14 10:57:28
+ * @LastEditors: huaqingyi
+ * @LastEditTime: 2020-10-26 14:42:39
+ * @debugger: 
+ */
+import { GFile, Task, Gulp, TSC, Gyi } from './dist';
 import { join } from 'path';
 import { Test } from './custom/build/test';
 
 @GFile
 export class GulpFile extends Gyi {
 
-    @Task({
-        src: join(__dirname, 'src/**/*.ts'),
-        dest: join(__dirname, 'dist'),
-        description: `测试 build ...`,
-    })
+    @Task({ description: `测试 build ...`, })
     public async build(tsc: TSC) {
         console.log('build');
-        tsc.runtime();
+        tsc.runtime(
+            join(__dirname, 'src/**/*.ts'),
+            join(__dirname, 'dist')
+        );
     }
 
     @Task
