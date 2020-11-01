@@ -1,2 +1,1 @@
-import { Gyi, GyiBootstrap } from '../core';
-export declare function GFile(target: GyiBootstrap<Gyi>): void;
+export declare function GFile(target: any, key?: string): void;

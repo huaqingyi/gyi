@@ -1,36 +1,45 @@
-/*
- * @FilePath: /gyi/gulpfile.ts
- * @Descripttion: 
- * @version: 
- * @Author: 易华青
- * @Date: 2020-10-14 10:57:28
- * @LastEditors: huaqingyi
- * @LastEditTime: 2020-10-26 14:42:39
- * @debugger: 
- */
-import { GFile, Task, Gulp, TSC, Gyi } from './dist';
+import { GFile, Task, TSC, Gulp } from './src';
 import { join } from 'path';
-import { Test } from './custom/build/test';
+import { Test } from './build/test';
 
+// @GFile
+// export class GulpFile {
+
+//     @Task()
+//     public async test() {
+//         console.log('test');
+//     }
+
+//     @Task({
+//         src: join(__dirname, 'src/**/*.ts'),
+//         dest: join(__dirname, 'dist'),
+//         series: ['test'],
+//         injectable: { Test }
+//     })
+//     public async build(tsc: TSC, test: Test) {
+//         await test.runtime();
+//         console.log('build');
+//         await tsc.runtime();
+//     }
+
+// }
 @GFile
-export class GulpFile extends Gyi {
+export class GulpFile {
 
-    @Task({ description: `测试 build ...`, })
+    @Task({
+        src: join(__dirname, 'src/**/*.ts'),
+        dest: join(__dirname, 'dist'),
+        description: 'build 任务 ...',
+    })
     public async build(tsc: TSC) {
         console.log('build');
-        tsc.runtime(
-            join(__dirname, 'src/**/*.ts'),
-            join(__dirname, 'dist')
-        );
+        tsc.runtime();
     }
 
-    @Task
-    public async test(test: Test) {
-        console.log(await test.runtime());
-    }
-
-    @Task
+    @Task({ description: '测试默认任务 ...' })
     public async default(gulp: Gulp) {
-        console.log(gulp);
+        console.log('build');
+        gulp.watch(join(__dirname, 'src/**/*.ts'), gulp.series('build'));
     }
+
 }

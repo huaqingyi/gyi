@@ -1,5 +1,5 @@
-import { Gyi, GyiBootstrap } from '../core';
+import { TaskCore } from "../core/task.core";
 
-export function GFile(target: GyiBootstrap<Gyi>) {
-    new target();
+export function GFile(target: any, key?: string) {
+    (new TaskCore).makeTask(target);
 }

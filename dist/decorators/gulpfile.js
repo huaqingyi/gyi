@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function GFile(target) {
-    new target();
+var task_core_1 = require("../core/task.core");
+function GFile(target, key) {
+    (new task_core_1.TaskCore).makeTask(target);
 }
 exports.GFile = GFile;
 

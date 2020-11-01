@@ -1,16 +1,17 @@
-import { GyiLib } from './gyi.libs';
-import webpack, { Configuration } from 'webpack';
-import { isString, join } from 'lodash';
+import { LibsBase } from "./libsbase";
+import webpack from 'webpack';
+import { isString } from 'lodash';
+import { join } from "path";
 
-export class Webpack extends GyiLib {
+export class Webpack extends LibsBase {
     /**
      * build config import
      * @param config configpath or webpack.Configuration
      */
     async runtime(
-        config?: string | Configuration
+        config?: string | webpack.Configuration
     ): Promise<NodeJS.ReadWriteStream> {
-        let configuration: Configuration = {};
+        let configuration: webpack.Configuration = {};
         if (config) {
             if (isString(config)) {
                 configuration = Object.create(require(config));
@@ -20,7 +21,7 @@ export class Webpack extends GyiLib {
         }
         try {
             if (!configuration) {
-                configuration = Object.create(require(join(process.cwd(), 'webpack.config')));
+                configuration = Object.create(require(join(__dirname, 'webpack.config')));
             }
             return await new Promise(r => webpack(configuration, async (err, stats) => {
                 if (err) return await Promise.reject(err);

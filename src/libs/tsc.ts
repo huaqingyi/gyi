@@ -1,34 +1,49 @@
-import { GyiLib } from './gyi.libs';
-import { init, write } from 'gulp-sourcemaps';
-import { createProject, Settings } from 'gulp-typescript';
-import { join } from 'path';
+import { LibsBase } from "./libsbase";
+import gulp from "gulp";
+import * as sourcemaps from 'gulp-sourcemaps';
+import * as tsc from 'gulp-typescript';
+import { join } from "path";
 import merge from 'merge2';
-import { src as source, dest as destf } from 'gulp';
 
-export class TSC extends GyiLib {
-
-    public runtime(
+export class TSC extends LibsBase {
+    /**
+     * ts component build to js
+     * @param src watch application *.ts
+     * @param dest build success copy to dirname
+     * @param ts gulp-typescript tools
+     * @param tsconfig gulp-typescript ts.Setting object or tsconfig and tsconfig path
+     */
+    async runtime(
         src?: string, dest?: string,
-        tsconfig?: string | Settings
-    ) {
-        let gp: NodeJS.ReadWriteStream = this.gulp as any;
-        if (!this.option || !this.option.src) {
-            if (!src) { throw new Error(`Not have source path .`); }
-            gp = source(src);
-        }
-        const tsr = gp.pipe(init()).pipe(
-            createProject(
-                tsconfig || join(process.cwd(), 'tsconfig.json') as any
-            )()
-        );
-
-        if (!this.option || !this.option.dest) {
-            if (!dest) { throw new Error(`Not have dest path .`); }
+        ts?: any, tsconfig?: string | tsc.Settings
+    ): Promise<NodeJS.ReadWriteStream> {
+        /**
+         * created gulp pipe
+         */
+        if (src) this.gulp = gulp.src(src);
+        try {
+            /**
+             * build runtime
+             */
+            const g: NodeJS.ReadWriteStream = (this.gulp as any);
+            if (!ts) ts = tsc;
+            if (!tsconfig) tsconfig = join(process.cwd(), 'tsconfig.json');
+            if (!dest) dest = './dist';
+            const tsResult = g.pipe(sourcemaps.init())
+                .pipe(ts.createProject(tsconfig)());
+            /**
+             * merge result
+             */
             return merge([
-                tsr.dts.pipe(destf(dest)),
-                tsr.js.pipe(write('./sourcemaps')).pipe(destf(dest)),
+                tsResult.dts.pipe(gulp.dest(dest)),
+                tsResult.js.pipe(sourcemaps.write("./sourcemaps"))
+                    .pipe(gulp.dest(dest))
             ]);
+        } catch (err) {
+            /**
+             * try error
+             */
+            return await Promise.reject(err);
         }
-        return merge([tsr.dts, tsr.js]);
     }
 }
