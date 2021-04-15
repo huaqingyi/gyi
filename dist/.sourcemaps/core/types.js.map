@@ -1,0 +1,1 @@
+{"version":3,"sources":["core/types.ts"],"names":[],"mappings":";;;AAAa,QAAA,OAAO,GAAG,MAAM,CAAC,MAAM,CAAC,CAAC;AACzB,QAAA,QAAQ,GAAG,MAAM,CAAC,OAAO,CAAC,CAAC","file":"../../core/types.js","sourcesContent":["export const TASKKEY = Symbol('task');\nexport const TASKSKEY = Symbol('tasks');\n"]}

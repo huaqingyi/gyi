@@ -1,0 +1,44 @@
+{
+  "name": "gyi",
+  "version": "1.0.7",
+  "description": "## 自动注入 Gulp 工具",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huaqingyi/gyi.git"
+  },
+  "keywords": [
+    "gulp",
+    "deploy",
+    "yi"
+  ],
+  "author": "huaqingyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huaqingyi/gyi/issues"
+  },
+  "homepage": "https://github.com/huaqingyi/gyi#readme",
+  "dependencies": {
+    "@types/gulp": "^4.0.8",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "lodash": "^4.17.21",
+    "merge2": "^1.4.1",
+    "reflect-metadata": "^0.1.13",
+    "undertaker": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/gulp-sourcemaps": "^0.0.34",
+    "@types/lodash": "^4.14.168",
+    "@types/merge2": "^1.3.0",
+    "@types/undertaker": "^1.2.6",
+    "ts-node": "^9.1.1"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
